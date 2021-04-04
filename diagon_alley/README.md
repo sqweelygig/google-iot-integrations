@@ -28,5 +28,13 @@ Everything a young witch or wizard needs to get themselves set up.
 1) Create a folder for the code, `ssh iot@<hostname>.local 'mkdir /home/iot/src'`
 1) Copy the application code, `scp -r ./* iot@<hostname>.local:/home/iot/src`
 1) Install the dependencies
-   * `ssh iot@<hostname>.local 'sudo pip3 install -r src/diagon_alley/pi_requirements.txt'`
-
+	* `ssh iot@<hostname>.local 'sudo pip3 install -r src/diagon_alley/pi_requirements.txt'`
+1) Start the program on login
+	1) `ssh iot@<hostname>.local`
+	1) `sudo nano /home/iot/.bashrc`
+	1) Add `cd /home/iot/src` as the final line
+	1) Add `sudo python3 main.py <led_count> <calendar> ... <calendar>` as the final line
+	1) Save and close
+	1) `sudo visudo`
+	1) Add `iot ALL = NOPASSWD: /usr/bin/python3` as the final line
+	1) Save, close and reboot
