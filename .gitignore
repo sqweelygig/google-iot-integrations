@@ -1,0 +1,6 @@
+# IDE Files
+.idea
+*.iml
+
+# Credentials files
+service-account.json
