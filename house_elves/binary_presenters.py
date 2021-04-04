@@ -18,7 +18,7 @@ class NeopixelPresenter:
 
 	def present(self, data):
 		"""Present a binary array as illuminated dots on a NeoPixel array"""
-		from ws2812x import Color as Colour
+		from rpi_ws281x import Color as Colour
 		from math import floor
 		for (index, datum) in enumerate(data):
 			# Far-away events should be in a calming colour
