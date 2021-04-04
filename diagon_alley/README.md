@@ -2,6 +2,10 @@
 
 Everything a young witch or wizard needs to get themselves set up.
 
+## Google Service Installation
+
+**This does need setting up as a google service account, your google calendars shared with this account, etc. I'll put instructions here.**
+
 ## Raspberry Pi Setup
 
 1) Download and install the [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
