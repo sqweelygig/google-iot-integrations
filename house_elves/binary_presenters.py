@@ -23,10 +23,11 @@ class NeopixelPresenter:
 		for (index, datum) in enumerate(data):
 			# Far-away events should be in a calming colour
 			# So as the index approaches the maximum index, the blueness maxes out
-			blueness = (index * 255) / (len(data) - 1)
-			blue = floor(blueness)
+			blueness = index / (len(data) - 1)
+			blue = floor(blueness * 128)
 			# Near-to events should be in an alerting colour
-			red = floor(255-blueness)
+			redness = 1 - blueness
+			red = floor(redness * 255)
 			# The LED should be illuminated on a truthy value
 			colour = Colour(red, 0, blue) if datum else Colour(0, 0, 0)
 			self.led_strip.setPixelColor(index, colour)
