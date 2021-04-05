@@ -6,7 +6,7 @@ class NeopixelPresenter:
 		led_freq=800000,
 		led_dma=10,
 		led_invert=False,
-		led_brightness=32,
+		led_brightness=255,
 		led_channel=0,
 	):
 		from rpi_ws281x import PixelStrip
