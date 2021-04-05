@@ -1,4 +1,4 @@
-from threading import Timer as defer
+from threading import Timer as defer, active_count
 from dateutil import parser as date_parser, tz as time_zones
 from datetime import datetime, timedelta
 from functools import partial
@@ -23,11 +23,32 @@ class RememberAll:
 		self.last_fetch_attempt = None
 		self.most_recent_presentation = None
 		self.events = {}
+		time_zero = datetime.now(tz=time_zones.UTC)
+		self.event_thread = defer(
+			0.001,
+			partial(self.update_events, time_zero),
+		)
+		self.event_thread.start()
+		self.presentation_thread = defer(
+			0.001,
+			partial(self.update_events, time_zero),
+		)
+		self.presentation_thread.start()
 
 	def tick(self):
 		time_zero = datetime.now(tz=time_zones.UTC)
-		defer(0.001, partial(self.update_events, time_zero)).start()
-		defer(0.001, partial(self.update_presentation, time_zero)).start()
+		if not self.event_thread.is_alive():
+			self.event_thread = defer(
+				0.001,
+				partial(self.update_events, time_zero),
+			)
+			self.event_thread.start()
+		if not self.presentation_thread.is_alive():
+			self.presentation_thread = defer(
+				0.001,
+				partial(self.update_presentation, time_zero),
+			)
+			self.presentation_thread.start()
 
 	def update_events(self, time_zero):
 		# Throttle the API requests
