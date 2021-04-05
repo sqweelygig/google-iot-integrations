@@ -4,8 +4,8 @@ from sys import argv as command_line_arguments
 
 try:
 	remember_all = RememberAll(
-		command_line_arguments[2:],
-		slot_count=int(command_line_arguments[1])
+		slot_count=int(command_line_arguments[1]),
+		calendars=command_line_arguments[2:],
 	)
 	while True:
 		remember_all.tick()
