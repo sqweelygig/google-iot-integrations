@@ -24,7 +24,7 @@ class NeopixelPresenter:
 			# Far-away events should be in a calming colour
 			# So as the index approaches the maximum index, the blueness maxes out
 			blueness = index / (len(data) - 1)
-			blue = floor(blueness * 128)
+			blue = floor(blueness * 32)
 			# Near-to events should be in an alerting colour
 			redness = 1 - blueness
 			red = floor(redness * 255)
