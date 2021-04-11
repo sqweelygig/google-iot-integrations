@@ -8,18 +8,18 @@ class RememberAll(CalendarFetcher):
 	def __init__(
 		self,
 		calendars,
-		slot_count=24,
+		led_count=24,
 		seconds_considered=16*60*60,
 		credentials_path='service-account.json',
 		smallest_slot=60,
 		setup_time=0.5,
 	):
-		self.slot_count = slot_count
+		self.led_count = led_count
 		self.smallest_slot = smallest_slot
-		self.data_presenter = get_presenter(led_count=slot_count)
+		self.data_presenter = get_presenter(led_count=led_count)
 		self.most_recent_presentation = None
 		self.slot_growth = RememberAll.calculate_slot_growth(
-			slot_count=slot_count,
+			led_count=led_count,
 			seconds_considered=seconds_considered,
 			smallest_slot=smallest_slot,
 			time_permitted=timedelta(seconds=setup_time),
@@ -32,7 +32,7 @@ class RememberAll(CalendarFetcher):
 			events=self.events.values(),
 			smallest_slot=self.smallest_slot,
 			slot_growth=self.slot_growth,
-			slot_count=self.slot_count,
+			led_count=self.led_count,
 		)
 		if event_slots != self.most_recent_presentation:
 			self.most_recent_presentation = event_slots
@@ -40,7 +40,7 @@ class RememberAll(CalendarFetcher):
 
 	def present_event_boundaries(self):
 		seconds_done = 0.0
-		for i in range(self.slot_count):
+		for i in range(self.led_count):
 			slot_size = self.smallest_slot * (self.slot_growth**i)
 			print(
 				"Slot ", i,
@@ -57,9 +57,9 @@ class RememberAll(CalendarFetcher):
 		events,
 		smallest_slot,
 		slot_growth,
-		slot_count,
+		led_count,
 	):
-		slots = [False] * slot_count
+		slots = [False] * led_count
 		for event in events:
 			event_perspective = RememberAll.calculate_event_perspective(
 				event=event,
@@ -67,7 +67,7 @@ class RememberAll(CalendarFetcher):
 				slot_growth=slot_growth,
 				time_zero=time_zero,
 			)
-			if event_perspective is not None and 0 <= event_perspective < slot_count:
+			if event_perspective is not None and 0 <= event_perspective < led_count:
 				slots[event_perspective] = True
 		return slots
 
@@ -91,7 +91,7 @@ class RememberAll(CalendarFetcher):
 
 	@staticmethod
 	def calculate_slot_growth(
-		slot_count,
+		led_count,
 		smallest_slot,
 		seconds_considered,
 		time_permitted,
@@ -102,7 +102,7 @@ class RememberAll(CalendarFetcher):
 		test_point = (lower_bound + upper_bound) / 2.0
 		while datetime.now(tz=time_zones.UTC) < time_to_end:
 			seconds_covered = 0
-			for i in range(slot_count):
+			for i in range(led_count):
 				slot_size = smallest_slot * (test_point**i)
 				seconds_covered += slot_size
 			if seconds_covered > seconds_considered:
