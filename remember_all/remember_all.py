@@ -11,7 +11,7 @@ class RememberAll:
 		self,
 		calendars,
 		slot_count=50,
-		seconds_considered=24*60*60*7,
+		seconds_considered=24*60*60*2,
 		credentials_path='service-account.json',
 		smallest_slot=60,
 		setup_time=0.5,
