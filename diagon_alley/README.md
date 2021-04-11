@@ -40,5 +40,5 @@ Everything a young witch or wizard needs to get themselves set up.
 	1) Add `sudo python3 main.py <led_count> <calendar> ... <calendar>` as the final line
 	1) Save and close
 	1) `sudo visudo`
-	1) Add `iot ALL = NOPASSWD: /usr/bin/python3` as the final line
+	1) Add `iot ALL = NOPASSWD: /usr/bin/python3, /usr/sbin/reboot` as the final line
 	1) Save, close and reboot
