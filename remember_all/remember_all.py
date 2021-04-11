@@ -10,7 +10,7 @@ class RememberAll:
 	def __init__(
 		self,
 		calendars,
-		slot_count=50,
+		slot_count=24,
 		seconds_considered=24*60*60*2,
 		credentials_path='service-account.json',
 		smallest_slot=60,
