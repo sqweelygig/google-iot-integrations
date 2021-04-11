@@ -1,12 +1,10 @@
-from threading import Timer as defer, active_count
 from dateutil import parser as date_parser, tz as time_zones
 from datetime import datetime, timedelta
-from functools import partial
 from house_elves.calendar_fetcher import CalendarFetcher
 from house_elves.binary_presenters import get_presenter
 
 
-class RememberAll:
+class RememberAll(CalendarFetcher):
 	def __init__(
 		self,
 		calendars,
@@ -16,64 +14,17 @@ class RememberAll:
 		smallest_slot=60,
 		setup_time=0.5,
 	):
-		self.calendars = calendars
 		self.slot_count = slot_count
 		self.smallest_slot = smallest_slot
-		self.credentials_path = credentials_path
 		self.data_presenter = get_presenter(led_count=slot_count)
-		self.last_fetch_attempt = None
 		self.most_recent_presentation = None
-		self.events = {}
 		self.slot_growth = RememberAll.calculate_slot_growth(
 			slot_count=slot_count,
 			seconds_considered=seconds_considered,
 			smallest_slot=smallest_slot,
 			time_permitted=timedelta(seconds=setup_time),
 		)
-		time_zero = datetime.now(tz=time_zones.UTC)
-		self.event_thread = defer(
-			0.001,
-			partial(self.update_events, time_zero),
-		)
-		self.event_thread.start()
-		self.presentation_thread = defer(
-			0.001,
-			partial(self.update_events, time_zero),
-		)
-		self.presentation_thread.start()
-
-	def tick(self):
-		time_zero = datetime.now(tz=time_zones.UTC)
-		if not self.event_thread.is_alive():
-			self.event_thread = defer(
-				0.001,
-				partial(self.update_events, time_zero),
-			)
-			self.event_thread.start()
-		else:
-			print(time_zero, "Skipping calendar update.")
-		if not self.presentation_thread.is_alive():
-			self.presentation_thread = defer(
-				0.001,
-				partial(self.update_presentation, time_zero),
-			)
-			self.presentation_thread.start()
-		else:
-			print(time_zero, "Skipping presentation update.")
-
-	def update_events(self, time_zero):
-		# Throttle the API requests
-		if(
-			self.last_fetch_attempt is None or
-			time_zero - self.last_fetch_attempt > timedelta(minutes=1)
-		):
-			self.last_fetch_attempt = time_zero
-			events = CalendarFetcher.fetch_events(
-				time_zero=time_zero,
-				calendars=self.calendars,
-				credentials_path=self.credentials_path,
-			)
-			self.events = events
+		super().__init__(calendars=calendars, credentials_path=credentials_path)
 
 	def update_presentation(self, time_zero):
 		event_slots = RememberAll.calculate_perspective_slots(
@@ -92,13 +43,13 @@ class RememberAll:
 		for i in range(self.slot_count):
 			slot_size = self.smallest_slot * (self.slot_growth**i)
 			print(
-				"Slot", i,
-				"covers about", round(seconds_done),
-				"to", round(seconds_done + slot_size),
-				"seconds.",
+				"Slot ", i,
+				" covers about ", timedelta(seconds=round(seconds_done)),
+				" to ", timedelta(seconds=round(seconds_done + slot_size)),
+				".",
+				sep="",
 			)
 			seconds_done += slot_size
-		print("This scale covers", timedelta(seconds=seconds_done), "hours.")
 
 	@staticmethod
 	def calculate_perspective_slots(
