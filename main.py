@@ -7,9 +7,10 @@ try:
 		slot_count=int(command_line_arguments[1]),
 		calendars=command_line_arguments[2:],
 	)
+	remember_all.present_event_boundaries()
 	while True:
 		remember_all.tick()
-		sleep(1/25)
+		sleep(1)
 except KeyboardInterrupt:
 	pass
 
