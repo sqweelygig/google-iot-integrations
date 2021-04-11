@@ -98,7 +98,7 @@ class RememberAll:
 				"seconds.",
 			)
 			seconds_done += slot_size
-		print("This scale covers ", timedelta(seconds=seconds_done), ".", sep="")
+		print("This scale covers", timedelta(seconds=seconds_done), "hours.")
 
 	@staticmethod
 	def calculate_perspective_slots(
