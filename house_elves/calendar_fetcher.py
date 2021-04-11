@@ -60,6 +60,9 @@ class CalendarFetcher:
 	def update_presentation(self, time_zero):
 		pass
 
+	def present_configuration(self):
+		print("Fetching events from: ", self.calendars)
+
 	@staticmethod
 	def fetch_events(time_zero, calendars, credentials_path):
 		events = {}

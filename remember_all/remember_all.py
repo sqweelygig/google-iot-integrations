@@ -38,7 +38,8 @@ class RememberAll(CalendarFetcher):
 			self.most_recent_presentation = event_slots
 			self.data_presenter(event_slots)
 
-	def present_event_boundaries(self):
+	def present_configuration(self):
+		super().present_configuration()
 		seconds_done = 0.0
 		for i in range(self.led_count):
 			slot_size = self.smallest_slot * (self.slot_growth**i)
