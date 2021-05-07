@@ -1,4 +1,4 @@
-from math import floor, ceiling
+from math import floor, ceil as ceiling
 
 
 class NeopixelPresenter:
